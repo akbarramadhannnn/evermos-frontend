@@ -1,33 +1,52 @@
-import React, { memo } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import Link from "next/link";
+import ConvertNumber from "../utils/convertNumber";
+import { ReplaceToSlug } from "../utils/replace";
 
-const Index = ({ data = [], isLoading = true }) => {
+const Index = ({ data = {} }) => {
+  const [isLoadedImage, setIsLoadedImage] = useState(false);
+
+  const price = useMemo(() => {
+    const convert = ConvertNumber(data.price);
+    return convert;
+  }, [data.price]);
+
+  const slug = useMemo(() => {
+    const slug = ReplaceToSlug(data.title);
+    return slug;
+  }, [data.title]);
+
+  const handleOnLoadImage = useCallback(() => {
+    setIsLoadedImage(true);
+  }, []);
+
   return (
-    <Link href="/details">
+    <Link
+      href={{
+        pathname: "/[slug]",
+        query: {
+          slug: slug,
+        },
+      }}
+    >
       <div className="card-product">
         <div className="img-box">
-          {isLoading ? (
-            <div className="skeleton-image"></div>
-          ) : (
-            <img src={data.image} alt="img-product" />
-          )}
+          <img
+            style={{ display: isLoadedImage ? "block" : "none" }}
+            src={data.image}
+            alt="img-product"
+            onLoad={handleOnLoadImage}
+          />
+          {!isLoadedImage && <div className="skeleton-image"></div>}
         </div>
 
         <div className="content">
           <div className="area-section">
-            {isLoading ? (
-              <div className="skeleton-text"></div>
-            ) : (
-              <h1>{data.name}</h1>
-            )}
+            <h1>{data.title}</h1>
           </div>
 
           <div className="area-section">
-            {isLoading ? (
-              <div className="skeleton-text"></div>
-            ) : (
-              <h2>Rp {data.price}</h2>
-            )}
+            <h2>Rp {price}</h2>
           </div>
         </div>
       </div>

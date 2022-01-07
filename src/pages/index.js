@@ -1,36 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import ProductList from "../components/ProductList";
+import LoadingProductList from "../components/LoadingProductList";
 
 import { GetData } from "../api/data";
-
-const data = [
-  {
-    name: "Produk Ini adlaha cdjksbcnjksndjkvndfjkvndf",
-    image: "https://source.unsplash.com/1-nx1QR5dTE",
-    price: "699.000",
-  },
-  {
-    name: "Produk 1",
-    image: "https://source.unsplash.com/1-nx1QR5dTE",
-    price: "699.000",
-  },
-  {
-    name: "Produk 1",
-    image: "https://source.unsplash.com/1-nx1QR5dTE",
-    price: "699.000",
-  },
-  {
-    name: "Produk 1",
-    image: "https://source.unsplash.com/1-nx1QR5dTE",
-    price: "699.000",
-  },
-  {
-    name: "Produk 1",
-    image: "https://source.unsplash.com/1-nx1QR5dTE",
-    price: "699.000",
-  },
-];
 
 const Index = () => {
   const [dataProduk, setDataProduk] = useState([]);
@@ -38,18 +11,30 @@ const Index = () => {
 
   useEffect(() => {
     GetData().then((response) => {
-      setDataProduk(response.data);
-    });
-    setTimeout(() => {
+      const dataArr = [];
+      for (let i = 0; i < response.data.length; i++) {
+        dataArr.push({
+          image: response.data[i].imageList[0],
+          title: response.data[i].title,
+          price: response.data[i].variantList[0].priceList[0].price,
+        });
+      }
+      setDataProduk(dataArr);
       setIsLoading(false);
-    }, 5000);
+    });
   }, []);
 
   return (
     <div className="container">
-      {dataProduk.map((d, i) => (
-        <ProductList key={i} data={d} isLoading={isLoading} />
-      ))}
+      {isLoading ? (
+        <LoadingProductList />
+      ) : (
+        <Fragment>
+          {dataProduk.map((d, i) => (
+            <ProductList key={i} data={d} isLoading={isLoading} />
+          ))}
+        </Fragment>
+      )}
     </div>
   );
 };

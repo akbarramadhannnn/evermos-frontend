@@ -9,6 +9,9 @@ import React, {
 import ImageSlider from "../components/ImageSlider";
 
 import ConvertNumber from "../utils/convertNumber";
+import { ReplaceToSlug } from "../utils/replace";
+
+import { GetData } from "../api/data";
 
 const dummyData = {
   id: 1,
@@ -45,10 +48,11 @@ const dummyData = {
   ],
 };
 
-const Index = () => {
-  const [storeListPrice, setStoreListPrice] = useState([]);
+const Index = (props) => {
+  const [storeVariantList, setStoreVariantList] = useState([]);
   const [storeImageList, setStoreImageList] = useState([]);
   const [detailData, setDetailData] = useState({});
+  const [selectedVariant, setSelectedVariant] = useState("");
   const [selectedKapasitas, setSelectedKapasitas] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(0);
@@ -56,20 +60,20 @@ const Index = () => {
   const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setStoreListPrice(dummyData.listPrice);
-      setStoreImageList(dummyData.imageList);
-      setDetailData({
-        name: dummyData.name,
-        image: dummyData.imageList[0],
-        description: dummyData.description,
-        price: dummyData.listPrice[0].price,
-        stok: dummyData.listPrice[0].stok,
-      });
-      setSelectedKapasitas(dummyData.listPrice[0].kapasitas);
-      setIsloading(false);
-    }, 5000);
-  }, []);
+    const data = props.data;
+    setStoreVariantList(data.variantList);
+    setStoreImageList(data.imageList);
+    setDetailData({
+      title: data.title,
+      image: data.imageList[0],
+      description: data.description,
+      price: data.variantList[0].priceList[0].price,
+      stok: data.variantList[0].priceList[0].stok,
+    });
+    setSelectedVariant(data.variantList[0].name);
+    setSelectedKapasitas(dummyData.listPrice[0].kapasitas);
+    setIsloading(false);
+  }, [props]);
 
   useEffect(() => {
     if (detailData.price) {
@@ -109,18 +113,37 @@ const Index = () => {
     setQuantity(Number(value));
   }, []);
 
-  const handleChangeKapasitas = useCallback(
-    (kapasitas) => {
-      const find = storeListPrice.find((d) => d.kapasitas === kapasitas);
-      setQuantity(1);
-      setSelectedKapasitas(kapasitas);
+  const findPriceListTest = useCallback(
+    (variant, kapasitas) => {
+      const findVariant = storeVariantList.find((d) => d.name === variant);
+      const findPriceList = findVariant.priceList.find(
+        (d) => d.kapasitas === kapasitas
+      );
       setDetailData((oldState) => ({
         ...oldState,
-        price: find.price,
-        stok: find.stok,
+        price: findPriceList.price,
+        stok: findPriceList.stok,
       }));
     },
-    [storeListPrice]
+    [storeVariantList]
+  );
+
+  const handleChangeVariant = useCallback(
+    (variant) => {
+      findPriceListTest(variant, selectedKapasitas);
+      setQuantity(1);
+      setSelectedVariant(variant);
+    },
+    [storeVariantList, selectedKapasitas, findPriceListTest]
+  );
+
+  const handleChangeKapasitas = useCallback(
+    (kapasitas) => {
+      findPriceListTest(selectedVariant, kapasitas);
+      setQuantity(1);
+      setSelectedKapasitas(kapasitas);
+    },
+    [storeVariantList, selectedVariant, findPriceListTest]
   );
 
   const onClickIncrement = useCallback(() => {
@@ -155,7 +178,7 @@ const Index = () => {
             {isLoading ? (
               <div className="skeleton-text"></div>
             ) : (
-              <h1 className="text-title">{detailData.name}</h1>
+              <h1 className="text-title">{detailData.title}</h1>
             )}
           </div>
 
@@ -177,6 +200,34 @@ const Index = () => {
 
           <div className="area-section-details">
             <div style={{ marginBottom: 5 }}>
+              <p>Variant :</p>
+            </div>
+            <div className="list-kapasitas">
+              {isLoading ? (
+                <div className="skeleton-text"></div>
+              ) : (
+                <Fragment>
+                  {storeVariantList.map((variant, i) => {
+                    return (
+                      <div key={i} className={`wrap-button`}>
+                        <button
+                          className={`wrap-button ${
+                            variant.name === selectedVariant && "is-active"
+                          }`}
+                          onClick={() => handleChangeVariant(variant.name)}
+                        >
+                          {variant.name}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </Fragment>
+              )}
+            </div>
+          </div>
+
+          <div className="area-section-details">
+            <div style={{ marginBottom: 5 }}>
               <p>Kapasitas :</p>
             </div>
             <div className="list-kapasitas">
@@ -184,18 +235,26 @@ const Index = () => {
                 <div className="skeleton-text"></div>
               ) : (
                 <Fragment>
-                  {storeListPrice.map((list, i) => (
-                    <div key={i} className={`wrap-button`}>
-                      <button
-                        className={`wrap-button ${
-                          list.kapasitas === selectedKapasitas && "is-active"
-                        }`}
-                        onClick={() => handleChangeKapasitas(list.kapasitas)}
-                      >
-                        {list.kapasitas}
-                      </button>
-                    </div>
-                  ))}
+                  {storeVariantList.map((variant, i) => {
+                    return (
+                      variant.name === selectedVariant &&
+                      variant.priceList.map((list, j) => (
+                        <div key={j} className={`wrap-button`}>
+                          <button
+                            className={`wrap-button ${
+                              list.kapasitas === selectedKapasitas &&
+                              "is-active"
+                            }`}
+                            onClick={() =>
+                              handleChangeKapasitas(list.kapasitas)
+                            }
+                          >
+                            {list.kapasitas}
+                          </button>
+                        </div>
+                      ))
+                    );
+                  })}
                 </Fragment>
               )}
             </div>
@@ -278,5 +337,23 @@ const Index = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const slug = context.query.slug;
+  const { data } = await GetData();
+  const result = data.find((d) => ReplaceToSlug(d.title) === slug);
+
+  // if (!data) {
+  //   return {
+  //     notFound: true,
+  //   }
+  // }
+
+  return {
+    props: {
+      data: result,
+    },
+  };
+}
 
 export default Index;
