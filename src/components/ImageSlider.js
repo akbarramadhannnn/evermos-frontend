@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 
 const Index = ({ image = "", imageList = [], onClick = () => {} }) => {
   return (
@@ -18,4 +18,4 @@ const Index = ({ image = "", imageList = [], onClick = () => {} }) => {
   );
 };
 
-export default Index;
+export default memo(Index);
