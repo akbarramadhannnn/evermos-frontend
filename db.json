@@ -1,0 +1,105 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Jual HP Iphone 5 / 5s",
+      "description": "Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+      "variantList": [
+        {
+          "name": "Iphone 5",
+          "priceList": [
+            {
+              "stok": 5,
+              "kapasitas": "16 GB",
+              "price": 300000
+            },
+            {
+              "stok": 10,
+              "kapasitas": "32 GB",
+              "price": 500000
+            }
+          ]
+        },
+        {
+          "name": "Iphone 5s",
+          "priceList": [
+            {
+              "stok": 3,
+              "kapasitas": "16 GB",
+              "price": 500000
+            },
+            {
+              "stok": 13,
+              "kapasitas": "32 GB",
+              "price": 800000
+            }
+          ]
+        }
+      ],
+      "imageList": [
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Jual HP Iphone 6 / 6s / 6+",
+      "description": "Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+      "variantList": [
+        {
+          "name": "Iphone 6",
+          "priceList": [
+            {
+              "stok": 7,
+              "kapasitas": "16 GB",
+              "price": 500000
+            },
+            {
+              "stok": 10,
+              "kapasitas": "32 GB",
+              "price": 800000
+            }
+          ]
+        },
+        {
+          "name": "Iphone 6s",
+          "priceList": [
+            {
+              "stok": 2,
+              "kapasitas": "16 GB",
+              "price": 1000000
+            },
+            {
+              "stok": 9,
+              "kapasitas": "32 GB",
+              "price": 1300000
+            }
+          ]
+        },
+        {
+          "name": "Iphone 6+",
+          "priceList": [
+            {
+              "stok": 6,
+              "kapasitas": "16 GB",
+              "price": 1200000
+            },
+            {
+              "stok": 8,
+              "kapasitas": "32 GB",
+              "price": 1500000
+            }
+          ]
+        }
+      ],
+      "imageList": [
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg",
+        "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg"
+      ]
+    }
+  ]
+}
