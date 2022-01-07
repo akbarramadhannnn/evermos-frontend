@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import ProductList from "../components/ProductList";
 
+import { GetData } from "../api/data";
+
 const data = [
   {
     name: "Produk Ini adlaha cdjksbcnjksndjkvndfjkvndf",
@@ -35,7 +37,9 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setDataProduk(data);
+    GetData().then((response) => {
+      setDataProduk(response.data);
+    });
     setTimeout(() => {
       setIsLoading(false);
     }, 5000);
