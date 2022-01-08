@@ -12,6 +12,11 @@
               "stok": 5,
               "kapasitas": "16 GB",
               "price": 300000
+            },
+            {
+              "stok": 10,
+              "kapasitas": "32 GB",
+              "price": 500000
             }
           ]
         },
