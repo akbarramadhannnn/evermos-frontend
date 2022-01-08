@@ -1,14 +1,20 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-  Fragment,
-} from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
+import { useRouter } from "next/router";
 
-import ImageSlider from "../components/ImageSlider";
+import {
+  ImageSlider,
+  TextTitle,
+  TextPrice,
+  TextDescription,
+  Message,
+  Purchase,
+  ButtonSelected,
+  LoadingSkeletonImage,
+  LoadingSkeletonText,
+  LoadingSkeletonDescription,
+} from "../components";
 
-import ConvertNumber from "../utils/convertNumber";
+import { ConvertNumber } from "../utils/convert";
 import { ReplaceToSlug } from "../utils/replace";
 
 import { GetData } from "../api/data";
@@ -49,8 +55,14 @@ const dummyData = {
 };
 
 const Index = (props) => {
+  const router = useRouter();
+  // List
+  const [variantList, setVariantList] = useState([]);
+  const [capacityList, setCapacityList] = useState([]);
+  // Store
   const [storeVariantList, setStoreVariantList] = useState([]);
   const [storeImageList, setStoreImageList] = useState([]);
+  // ====
   const [detailData, setDetailData] = useState({});
   const [selectedVariant, setSelectedVariant] = useState("");
   const [selectedKapasitas, setSelectedKapasitas] = useState("");
@@ -61,6 +73,20 @@ const Index = (props) => {
 
   useEffect(() => {
     const data = props.data;
+    const variantArr = [];
+    const capacityArr = [];
+    for (let i = 0; i < data.variantList.length; i++) {
+      variantArr.push({
+        name: data.variantList[i].name,
+      });
+    }
+    for (let i = 0; i < data.variantList[0].priceList.length; i++) {
+      capacityArr.push({
+        name: data.variantList[0].priceList[i].kapasitas,
+      });
+    }
+    setVariantList(variantArr);
+    setCapacityList(capacityArr);
     setStoreVariantList(data.variantList);
     setStoreImageList(data.imageList);
     setDetailData({
@@ -92,13 +118,6 @@ const Index = (props) => {
     }
   }, [quantity, detailData.stok]);
 
-  const handleClickImageSLider = useCallback((url) => {
-    setDetailData((oldState) => ({
-      ...oldState,
-      image: url,
-    }));
-  }, []);
-
   const price = useMemo(() => {
     return ConvertNumber(detailData.price);
   }, [detailData.price]);
@@ -107,10 +126,11 @@ const Index = (props) => {
     return ConvertNumber(total);
   }, [total]);
 
-  const handleChangeTotal = useCallback((e) => {
-    const { value } = e.target;
-    if (isNaN(value)) return false;
-    setQuantity(Number(value));
+  const handleClickImageSLider = useCallback((url) => {
+    setDetailData((oldState) => ({
+      ...oldState,
+      image: url,
+    }));
   }, []);
 
   const findPriceListTest = useCallback(
@@ -119,17 +139,34 @@ const Index = (props) => {
       const findPriceList = findVariant.priceList.find(
         (d) => d.kapasitas === kapasitas
       );
-      setDetailData((oldState) => ({
-        ...oldState,
-        price: findPriceList.price,
-        stok: findPriceList.stok,
-      }));
+      if (findPriceList !== undefined) {
+        setDetailData((oldState) => ({
+          ...oldState,
+          price: findPriceList.price,
+          stok: findPriceList.stok,
+        }));
+      } else {
+        setDetailData((oldState) => ({
+          ...oldState,
+          price: findVariant.priceList[0].price,
+          stok: findVariant.priceList[0].stok,
+        }));
+        setSelectedKapasitas(findVariant.priceList[0].kapasitas);
+      }
     },
     [storeVariantList]
   );
 
   const handleChangeVariant = useCallback(
     (variant) => {
+      const findCapacity = storeVariantList.find((d) => d.name === variant);
+      const capacityArr = [];
+      for (let i = 0; i < findCapacity.priceList.length; i++) {
+        capacityArr.push({
+          name: findCapacity.priceList[i].kapasitas,
+        });
+      }
+      setCapacityList(capacityArr);
       findPriceListTest(variant, selectedKapasitas);
       setQuantity(1);
       setSelectedVariant(variant);
@@ -146,23 +183,20 @@ const Index = (props) => {
     [storeVariantList, selectedVariant, findPriceListTest]
   );
 
-  const onClickIncrement = useCallback(() => {
-    if (quantity < detailData.stok) {
-      setQuantity(quantity + 1);
-    }
-  }, [detailData, quantity]);
-
-  const onClickDecrement = useCallback(() => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  }, [quantity]);
+  const handleClickBackBtn = useCallback(() => {
+    router.push("/");
+  }, [router]);
 
   return (
     <div className="container-details-product">
+      <div className="back-btn-area">
+        <button className="back-btn" onClick={handleClickBackBtn}>
+          {"<"}
+        </button>
+      </div>
       <div className="image-area">
         {isLoading ? (
-          <div className="skeleton-image"></div>
+          <LoadingSkeletonImage />
         ) : (
           <ImageSlider
             image={detailData.image}
@@ -176,154 +210,85 @@ const Index = (props) => {
         <div className="info-area">
           <div className="area-section-details">
             {isLoading ? (
-              <div className="skeleton-text"></div>
+              <LoadingSkeletonText />
             ) : (
-              <h1 className="text-title">{detailData.title}</h1>
+              <TextTitle>{detailData.title}</TextTitle>
             )}
           </div>
 
           <div className="area-section-details">
             {isLoading ? (
-              <div className="skeleton-text"></div>
+              <LoadingSkeletonText />
             ) : (
-              <h2 className="text-price">Rp {price}</h2>
+              <TextPrice>{price}</TextPrice>
             )}
           </div>
 
           <div className="area-section-details">
             {isLoading ? (
-              <div className="skeleton-description"></div>
+              <LoadingSkeletonDescription />
             ) : (
-              <p className="text-description">{detailData.description}</p>
+              <TextDescription>{detailData.description}</TextDescription>
             )}
           </div>
 
           <div className="area-section-details">
-            <div style={{ marginBottom: 5 }}>
+            <div className="mb-5">
               <p>Variant :</p>
             </div>
-            <div className="list-kapasitas">
-              {isLoading ? (
-                <div className="skeleton-text"></div>
-              ) : (
-                <Fragment>
-                  {storeVariantList.map((variant, i) => {
-                    return (
-                      <div key={i} className={`wrap-button`}>
-                        <button
-                          className={`wrap-button ${
-                            variant.name === selectedVariant && "is-active"
-                          }`}
-                          onClick={() => handleChangeVariant(variant.name)}
-                        >
-                          {variant.name}
-                        </button>
-                      </div>
-                    );
-                  })}
-                </Fragment>
-              )}
-            </div>
+            {isLoading ? (
+              <LoadingSkeletonText />
+            ) : (
+              <ButtonSelected
+                data={variantList}
+                selected={selectedVariant}
+                onClick={(name) => handleChangeVariant(name)}
+              />
+            )}
           </div>
 
           <div className="area-section-details">
-            <div style={{ marginBottom: 5 }}>
+            <div className="mb-5">
               <p>Kapasitas :</p>
             </div>
-            <div className="list-kapasitas">
-              {isLoading ? (
-                <div className="skeleton-text"></div>
-              ) : (
-                <Fragment>
-                  {storeVariantList.map((variant, i) => {
-                    return (
-                      variant.name === selectedVariant &&
-                      variant.priceList.map((list, j) => (
-                        <div key={j} className={`wrap-button`}>
-                          <button
-                            className={`wrap-button ${
-                              list.kapasitas === selectedKapasitas &&
-                              "is-active"
-                            }`}
-                            onClick={() =>
-                              handleChangeKapasitas(list.kapasitas)
-                            }
-                          >
-                            {list.kapasitas}
-                          </button>
-                        </div>
-                      ))
-                    );
-                  })}
-                </Fragment>
-              )}
-            </div>
+            {isLoading ? (
+              <LoadingSkeletonText />
+            ) : (
+              <ButtonSelected
+                data={capacityList}
+                selected={selectedKapasitas}
+                onClick={(name) => handleChangeKapasitas(name)}
+              />
+            )}
           </div>
 
           <div className="area-section-details">
-            <div style={{ marginBottom: 5 }}>
+            <div className="mb-5">
               <p>Atur Pembelian :</p>
             </div>
             {isLoading ? (
-              <div className="skeleton-text"></div>
+              <LoadingSkeletonText />
             ) : (
-              <div className="purchase-area">
-                <div className="wrap-input">
-                  <div className="input-area">
-                    <button
-                      className="quantity-button"
-                      disabled={quantity > 1 ? false : true}
-                      onClick={onClickDecrement}
-                    >
-                      <span>-</span>
-                    </button>
-                    <input
-                      value={quantity}
-                      onChange={handleChangeTotal}
-                      style={{
-                        width: "100%",
-                        textAlign: "center",
-                        border: "none",
-                        outline: "none",
-                      }}
-                      type="text"
-                    />
-                    <button
-                      className="quantity-button"
-                      disabled={quantity < detailData.stok ? false : true}
-                      onClick={onClickIncrement}
-                    >
-                      <span>+</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="wrap-quantity">
-                  <p>
-                    Stok :{" "}
-                    <span className="text-price-two">{detailData.stok}</span>
-                  </p>
-                </div>
-              </div>
+              <Purchase
+                quantity={quantity}
+                setQuantity={(value) => setQuantity(value)}
+                stok={detailData.stok}
+              />
             )}
 
-            {message && (
-              <div>
-                <p className="message-purchase-area">{message}</p>
-              </div>
-            )}
+            <Message text={message} />
           </div>
         </div>
 
         <div className="action-area">
           <div className="left-area">
-            <div className="wrap-input" style={{ marginBottom: 5 }}>
+            <div className="wrap-input mb-5">
               <p>Subtotal :</p>
             </div>
             {isLoading ? (
-              <div className="skeleton-text"></div>
+              <LoadingSkeletonText />
             ) : (
-              <div className="text-price">Rp {subTotal}</div>
+              <TextPrice>{subTotal}</TextPrice>
             )}
           </div>
 
@@ -342,12 +307,6 @@ export async function getServerSideProps(context) {
   const slug = context.query.slug;
   const { data } = await GetData();
   const result = data.find((d) => ReplaceToSlug(d.title) === slug);
-
-  // if (!data) {
-  //   return {
-  //     notFound: true,
-  //   }
-  // }
 
   return {
     props: {

@@ -1,7 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-
-import ProductList from "../components/ProductList";
-import LoadingProductList from "../components/LoadingProductList";
+import { ProducList, LoadingProductList } from "../components";
 
 import { GetData } from "../api/data";
 
@@ -31,7 +29,7 @@ const Index = () => {
       ) : (
         <Fragment>
           {dataProduk.map((d, i) => (
-            <ProductList key={i} data={d} isLoading={isLoading} />
+            <ProducList key={i} data={d} isLoading={isLoading} />
           ))}
         </Fragment>
       )}

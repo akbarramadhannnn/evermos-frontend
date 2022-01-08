@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import Link from "next/link";
-import ConvertNumber from "../utils/convertNumber";
+import { ConvertNumber } from "../utils/convert";
 import { ReplaceToSlug } from "../utils/replace";
 
 const Index = ({ data = {} }) => {
