@@ -19,41 +19,6 @@ import { ReplaceToSlug } from "../utils/replace";
 
 import { GetData } from "../api/data";
 
-const dummyData = {
-  id: 1,
-  name: "Hp Iphone 7",
-  description: ` Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat,
-  rerum asperiores error omnis pariatur sequi placeat quia fuga ullam.
-  Harum obcaecati suscipit illum similique excepturi voluptates quae
-  deserunt tempore, distinctio architecto ipsum dolor laboriosam
-  inventore impedit nostrum totam eaque sed est? Non rem repudiandae,
-  vitae iure suscipit pariatur, cum esse sequi cumque saepe commodi
-  reprehenderit quaerat. Quasi ipsam repellendus similique`,
-  listPrice: [
-    {
-      stok: 5,
-      kapasitas: "16 GB",
-      price: 1000000,
-    },
-    {
-      stok: 10,
-      kapasitas: "32 GB",
-      price: 1200000,
-    },
-    {
-      stok: 15,
-      kapasitas: "64 GB",
-      price: 1400000,
-    },
-  ],
-  imageList: [
-    "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_1.jpg",
-    "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_2.jpg",
-    "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_3.jpg",
-    "https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/shoe_4.jpg",
-  ],
-};
-
 const Index = (props) => {
   const router = useRouter();
   // List
@@ -71,33 +36,35 @@ const Index = (props) => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsloading] = useState(true);
 
-  useEffect(() => {
-    const data = props.data;
+  useEffect(async () => {
+    const slug = props.slug;
+    const { data } = await GetData();
+    const result = data.find((d) => ReplaceToSlug(d.title) === slug);
     const variantArr = [];
     const capacityArr = [];
-    for (let i = 0; i < data.variantList.length; i++) {
+    for (let i = 0; i < result.variantList.length; i++) {
       variantArr.push({
-        name: data.variantList[i].name,
+        name: result.variantList[i].name,
       });
     }
-    for (let i = 0; i < data.variantList[0].priceList.length; i++) {
+    for (let i = 0; i < result.variantList[0].priceList.length; i++) {
       capacityArr.push({
-        name: data.variantList[0].priceList[i].kapasitas,
+        name: result.variantList[0].priceList[i].kapasitas,
       });
     }
     setVariantList(variantArr);
     setCapacityList(capacityArr);
-    setStoreVariantList(data.variantList);
-    setStoreImageList(data.imageList);
+    setStoreVariantList(result.variantList);
+    setStoreImageList(result.imageList);
     setDetailData({
-      title: data.title,
-      image: data.imageList[0],
-      description: data.description,
-      price: data.variantList[0].priceList[0].price,
-      stok: data.variantList[0].priceList[0].stok,
+      title: result.title,
+      image: result.imageList[0],
+      description: result.description,
+      price: result.variantList[0].priceList[0].price,
+      stok: result.variantList[0].priceList[0].stok,
     });
-    setSelectedVariant(data.variantList[0].name);
-    setSelectedKapasitas(dummyData.listPrice[0].kapasitas);
+    setSelectedVariant(result.variantList[0].name);
+    setSelectedKapasitas(result.variantList[0].priceList[0].kapasitas);
     setIsloading(false);
   }, [props]);
 
@@ -292,11 +259,11 @@ const Index = (props) => {
             )}
           </div>
 
-          <div className="button-area">
+          {/* <div className="button-area">
             {!isLoading && (
               <button disabled={message ? true : false}>Beli</button>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
@@ -305,12 +272,13 @@ const Index = (props) => {
 
 export async function getServerSideProps(context) {
   const slug = context.query.slug;
-  const { data } = await GetData();
-  const result = data.find((d) => ReplaceToSlug(d.title) === slug);
+  // const { data } = await GetData();
+  // const result = data.find((d) => ReplaceToSlug(d.title) === slug);
 
   return {
     props: {
-      data: result,
+      slug,
+      // data: result,
     },
   };
 }
