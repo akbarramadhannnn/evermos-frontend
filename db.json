@@ -37,7 +37,8 @@
         }
       ],
       "imageList": [
-        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg"
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-2.jpeg"
       ]
     },
     {
@@ -92,7 +93,8 @@
         }
       ],
       "imageList": [
-        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg"
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-2.jpeg"
       ]
     }
   ]
