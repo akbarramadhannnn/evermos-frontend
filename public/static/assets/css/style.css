@@ -373,6 +373,10 @@ button[disabled] {
   overflow-x: scroll;
 }
 
+.button-selected::-webkit-scrollbar {
+  display: none;
+}
+
 .button-selected .wrap-button {
   margin-right: 5px;
 }
