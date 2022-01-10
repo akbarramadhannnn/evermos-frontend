@@ -36,7 +36,9 @@
           ]
         }
       ],
-      "imageList": ["iphone-1.jpg", "iphone-2.jpg"]
+      "imageList": [
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg"
+      ]
     },
     {
       "id": 2,
@@ -89,7 +91,9 @@
           ]
         }
       ],
-      "imageList": ["iphone-1.jpg", "iphone-2.jpg"]
+      "imageList": [
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg"
+      ]
     }
   ]
 }
