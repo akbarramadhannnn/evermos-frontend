@@ -100,6 +100,101 @@
         "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg",
         "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-2.jpeg"
       ]
+    },
+    {
+      "id": 3,
+      "title": "Jual HP Iphone 7 / 7s / 7s+ / 7+",
+      "description": "Lorem Ipsumis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+      "variantList": [
+        {
+          "name": "7",
+          "priceList": [
+            {
+              "stok": 7,
+              "kapasitas": "16 GB",
+              "price": 500000
+            },
+            {
+              "stok": 10,
+              "kapasitas": "32 GB",
+              "price": 800000
+            }
+          ]
+        },
+        {
+          "name": "7s",
+          "priceList": [
+            {
+              "stok": 2,
+              "kapasitas": "16 GB",
+              "price": 2000000
+            },
+            {
+              "stok": 9,
+              "kapasitas": "32 GB",
+              "price": 2800000
+            },
+            {
+              "stok": 12,
+              "kapasitas": "64 GB",
+              "price": 2300000
+            }
+          ]
+        },
+        {
+          "name": "7s+",
+          "priceList": [
+            {
+              "stok": 30,
+              "kapasitas": "16 GB",
+              "price": 2200000
+            }
+          ]
+        },
+        {
+          "name": "7+",
+          "priceList": [
+            {
+              "stok": 30,
+              "kapasitas": "16 GB",
+              "price": 1200000
+            },
+            {
+              "stok": 50,
+              "kapasitas": "32 GB",
+              "price": 2500000
+            },
+            {
+              "stok": 80,
+              "kapasitas": "64 GB",
+              "price": 3500000
+            },
+            {
+              "stok": 90,
+              "kapasitas": "128 GB",
+              "price": 5500000
+            },
+            {
+              "stok": 100,
+              "kapasitas": "256 GB",
+              "price": 6500000
+            },
+            {
+              "stok": 200,
+              "kapasitas": "512 GB",
+              "price": 8500000
+            }
+          ]
+        }
+      ],
+      "imageList": [
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-1.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-2.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-3.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-4.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-5.jpeg",
+        "https://raw.githubusercontent.com/akbarramadhannnn/evermos-frontend/master/public/static/assets/images/iphone-6.jpeg"
+      ]
     }
   ]
 }
